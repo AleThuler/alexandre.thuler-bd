@@ -1,6 +1,5 @@
 CREATE DATABASE Rota_Livre; 
 USE Rota_Livre;
-DROP DATABASE Rota_Livre;
 
 CREATE TABLE Manutencao (
 	ID_manutencao INT AUTO_INCREMENT PRIMARY KEY,
