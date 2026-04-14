@@ -121,31 +121,65 @@ INSERT INTO Historico (fk_ID_contrato, data_criacao, descricao, condicao_inicial
 (5, '2026-03-28', 'Substituição de veículo próprio', 'Excelente', 'Impecável'),
 (6, '2026-04-10', 'Locação para evento', 'Excelente', 'Luz de injeção acesa no painel');
 
+-- Quais foram todas as multas tomadas?
 SELECT * FROM Multa;
+
+-- Quais são todos os carros no nosso banco de dados?
 SELECT * FROM Carro;
+
+-- Quais são os modelos dos carro que são categorizados como SUV?
 SELECT modelo FROM Carro WHERE categoria = 'SUV';
-SELECT fk_ID_contrato, cidade FROM Multa WHERE data_hora < '2026-03-20';
-SELECT fk_ID_cliente FROM Contrato WHERE ID_contrato =1 OR ID_contrato =2;
-SELECT nome, CPF FROM Cliente WHERE ID_cliente = 1 OR ID_cliente = 2;
-SELECT * FROM Carro WHERE quilometragem >30000;
+
+-- Qual foi os clientes que tomaram multas depois de 20/03?
+SELECT Cliente.nome, Multa.data_hora FROM Contrato
+INNER JOIN Multa ON Multa.data_hora > '2026-03-20' AND Multa.fk_ID_contrato = Contrato.ID_contrato
+INNER JOIN Cliente ON Contrato.fk_ID_cliente = Cliente.ID_cliente;
+
+-- E poderia mostrar todos os dados dessas multas?
+SELECT * FROM Multa WHERE data_hora > '2026-03-20';
+
+-- Quais clientes não tem DDD 11?
+SELECT * FROM Cliente WHERE NOT numero_telefone LIKE '%(11)%';
+
+-- Quais carros já passaram de 30mil km rodados?
+SELECT * FROM Carro WHERE quilometragem > 30000;
+
+-- Quais contratos foram menos de 1200 reais?
 SELECT * FROM Contrato WHERE preco < 1200;
+
+-- Qual as placas dos carros que são depois de 2023?
 SELECT placa_carro FROM Carro WHERE ano > 2023;
-SELECT * FROM Contrato WHERE pagamento = 'Pix';
+
+-- Quais contratos e clientes pagaram com pix?
+SELECT Cliente.nome, Contrato.pagamento FROM Contrato
+INNER JOIN Cliente ON Contrato.pagamento = 'Pìx' AND Contrato.fk_ID_cliente = Cliente.ID_cliente;
+
+-- Quais são os mecanicos que começam com C?
 SELECT * FROM Manutencao WHERE local_mecanico LIKE 'c%';
+
+-- Quais dos nossos cliente tem os nomes que começam com A e com C?
 SELECT * FROM Cliente WHERE nome BETWEEN 'A%' AND 'C%';
+
+-- Quero a lista de todos os contratos organizados pelo ID dos carros
 SELECT * FROM Contrato ORDER BY fk_ID_carro;
+
+-- Qual foi a descrição dos carros que foram para São Paulo?
 SELECT descricao FROM Multa WHERE cidade = 'São Paulo';
-SELECT nome, data_nascimento FROM Cliente WHERE data_nascimento < '1995-01-01';
+
+-- Quais sãos os nossos clientes que nasceram depois de 1995?
+SELECT nome, data_nascimento FROM Cliente WHERE data_nascimento < '1994-12-31';
+
+-- Qual o modelo e a placa dos carros que estão disponíveis?
 SELECT modelo, placa_carro FROM Carro WHERE status = 'Disponível';
+
+-- Onde que estãos os mecanicos que custaram mais de 1000 reais? E qual o procedimento feito? E o preço?
 SELECT local_mecanico, procedimento, preco FROM Manutencao WHERE preco > 1000;
+
+-- Quais contrato foram feitos na Filial Aeroporto?
 SELECT * FROM Contrato WHERE locadora = 'Filial Aeroporto';
+
+-- Quais foi a condição do carro quando ele foi e quando ele voltou do contrato com ID 1?
 SELECT condicao_inicial, condicao_final FROM Historico WHERE fk_ID_contrato = 1;
+
+-- Mostre todos os carro organizados pelo mais novo para o mais velho
 SELECT * FROM Carro ORDER BY ano DESC;
-
-
-
-
-
-
-
-
